@@ -7,6 +7,7 @@
 #include "player.h"
 #include "enemies.h"
 #include "elements.h"
+#include "levels.h"
 
 
 void stateGamePrepareLevel()
