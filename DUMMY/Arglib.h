@@ -1,5 +1,5 @@
-#ifndef Arduboy_h
-#define Arduboy_h
+#ifndef Arglib_h
+#define Arglib_h
 
 #include <SPI.h>
 #include <Print.h>
@@ -10,7 +10,25 @@
 #include <EEPROM.h>
 #include <avr/pgmspace.h>
 
-#define ARDUBOY
+// main hardware compile flags
+
+#if !defined(ARDUBOY_10) && !defined(AB_DEVKIT)
+/// defaults to Arduboy Release 1.0 if not using a boards.txt file
+/**
+ * we default to Arduboy Release 1.0 if a compile flag has not been
+ * passed to us from a boards.txt file
+ *
+ * if you wish to compile for the devkit without using a boards.txt
+ * file simply comment out the ARDUBOY_10 define and uncomment
+ * the AB_DEVKIT define like this:
+ *
+ *     // #define ARDUBOY_10
+ *     #define AB_DEVKIT
+ */
+#define ARDUBOY_10   //< compile for the production Arduboy v1.0
+// #define AB_DEVKIT    //< compile for the official dev kit
+#endif
+
 
 #define AVAILABLE_TIMERS 2
 #define TUNE_OP_PLAYNOTE  0x90  /* play a note: low nibble is generator #, note is next byte */
@@ -31,9 +49,15 @@
 #define PIXEL_SAFE_MODE
 #define SAFE_MODE
 
+#ifdef AB_DEVKIT
+#define CS 6
+#define DC 4
+#define RST 12
+#else
 #define CS 12
 #define DC 4
 #define RST 6
+#endif
 
 // compare Vcc to 1.1 bandgap
 #define ADC_VOLTAGE _BV(REFS0) | _BV(MUX4) | _BV(MUX3) | _BV(MUX2) | _BV(MUX1)
@@ -41,6 +65,27 @@
 // also _BV(MUX5)
 #define ADC_TEMP _BV(REFS0) | _BV(REFS1) | _BV(MUX2) | _BV(MUX1) | _BV(MUX0)
 
+#ifdef AB_DEVKIT
+#define LEFT_BUTTON _BV(5)
+#define RIGHT_BUTTON _BV(2)
+#define UP_BUTTON _BV(4)
+#define DOWN_BUTTON _BV(6)
+#define A_BUTTON _BV(1)
+#define B_BUTTON _BV(0)
+
+#define PIN_LEFT_BUTTON 9
+#define PIN_RIGHT_BUTTON 5
+#define PIN_UP_BUTTON 8
+#define PIN_DOWN_BUTTON 10
+#define PIN_A_BUTTON A0
+#define PIN_B_BUTTON A1
+
+#define PIN_SPEAKER_1 A2
+// SPEAKER_2 is purposely not defined for DEVKIT as it could potentially
+// be dangerous and fry your hardware (because of the devkit wiring).
+//
+// Reference: https://github.com/Arduboy/Arduboy/issues/108
+#else
 #define LEFT_BUTTON _BV(5)
 #define RIGHT_BUTTON _BV(6)
 #define UP_BUTTON _BV(7)
@@ -57,6 +102,7 @@
 
 #define PIN_SPEAKER_1 5
 #define PIN_SPEAKER_2 13
+#endif
 
 #define WIDTH 128
 #define HEIGHT 64

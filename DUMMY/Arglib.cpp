@@ -47,8 +47,11 @@ void Arduboy::start()
   pinMode(PIN_A_BUTTON, INPUT_PULLUP);
   pinMode(PIN_B_BUTTON, INPUT_PULLUP);
   tunes.initChannel(PIN_SPEAKER_1);
+#ifdef AB_DEVKIT
+  tunes.initChannel(PIN_SPEAKER_1); // use the same pin for both channels
+#else
   tunes.initChannel(PIN_SPEAKER_2);
-
+#endif
 
   csport = portOutputRegister(digitalPinToPort(CS));
   cspinmask = digitalPinToBitMask(CS);
@@ -1124,25 +1127,24 @@ boolean Arduboy::not_pressed(uint8_t buttons)
 
 uint8_t Arduboy::getInput()
 {
+  uint8_t buttons;
+
   // using ports here is ~100 bytes smaller than digitalRead()
-  /*
-#ifdef DEVKIT
+#ifdef AB_DEVKIT
   // down, left, up
-  uint8_t buttons = ((~PINB) & B01110000);
+  buttons = ((~PINB) & B01110000);
   // right button
   buttons = buttons | (((~PINC) & B01000000) >> 4);
   // A and B
   buttons = buttons | (((~PINF) & B11000000) >> 6);
-#endif
-*/
-  uint8_t buttons;
-  // down, left, up
+#else
   // down, up, left right
   buttons = ((~PINF) & B11110000);
   // A (left)
   buttons = buttons | (((~PINE) & B01000000) >> 3);
   // B (right)
   buttons = buttons | (((~PINB) & B00010000) >> 2);
+#endif
 
   // b0dlu0rab - see button defines in Arduboy.h
   return buttons;
