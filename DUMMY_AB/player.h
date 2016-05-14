@@ -4,8 +4,6 @@
 #include <Arduino.h>
 #include "globals.h"
 
-byte playerFrame = 0;
-
 struct Players
 {
   public:
@@ -13,15 +11,16 @@ struct Players
     int y;
     boolean walking;
     byte direction;
+    byte frame;
 };
 
-Players player = { .x = 20, .y = 20, .walking = false, .direction = FACING_SOUTH };
+Players player = { .x = 20, .y = 20, .walking = false, .direction = FACING_SOUTH, .frame = 0 };
 
 void drawPlayer()
 {
-  if (arduboy.everyXFrames(6) && player.walking) playerFrame++;
-  if (playerFrame > 3 ) playerFrame = 0;
-  sprites.drawPlusMask(player.x, player.y, player_plus_mask, playerFrame + 4 * player.direction);
+  if (arduboy.everyXFrames(6) && player.walking) player.frame++;
+  if (player.frame > 3 ) player.frame = 0;
+  sprites.drawPlusMask(player.x, player.y, player_plus_mask, player.frame + 4 * player.direction);
 }
 
 #endif
