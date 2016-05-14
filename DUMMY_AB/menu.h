@@ -7,13 +7,13 @@
 void stateMenuIntro()
 {
   counter++;
-  sprites.drawSelfMasked(0, 8, TEAMarg, 0);
+  arduboy.drawBitmap(0, 8, TEAMarg, 128, 48, WHITE);
   if (counter > 180) gameState = STATE_MENU_MAIN;
 }
 
 void stateMenuMain()
 {
-  sprites.drawSelfMasked(0, 0, titleScreen, 0);
+  arduboy.drawBitmap(0, 0, titleScreen, 128, 64, WHITE);
   for (byte i = 0; i < 4; i++)
   {
     {
@@ -31,14 +31,14 @@ void stateMenuMain()
 
 void stateMenuHelp()
 {
-  sprites.drawSelfMasked(32, 0, qrcode, 0);
+  arduboy.drawBitmap(32, 0, qrcode, 64, 64, WHITE);
   if (buttons.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 
 
 void stateMenuInfo()
 {
-  sprites.drawSelfMasked(16, 20, info, 0);
+  arduboy.drawBitmap(16, 20, info, 96, 24, WHITE);
   if (buttons.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 
