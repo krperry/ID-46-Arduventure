@@ -6,11 +6,4 @@
 
 
 
-
-
-void checkCollisions()
-{
-  
-}
-
 #endif
