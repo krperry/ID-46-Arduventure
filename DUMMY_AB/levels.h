@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include "globals.h"
 
-
+void checkCollisions()
+{
+  
+}
 
 #endif

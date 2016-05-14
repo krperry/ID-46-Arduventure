@@ -28,6 +28,7 @@ void stateGamePlaying()
 {
   checkInputs();
   drawPlayer();
+  checkCollisions();
 };
 
 void stateGamePause()
