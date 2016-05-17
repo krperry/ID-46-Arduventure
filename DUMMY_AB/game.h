@@ -9,17 +9,17 @@
 #include "elements.h"
 #include "levels.h"
 
-
-void stateGamePrepareLevel()
+void stateMenuPlay()
+//void stateGamePrepareLevel()
 {
-  level = 1;
-  scorePlayer = 0; 
+  player.score = 0; 
   gameState = STATE_GAME_NEXT_LEVEL;
 };
 
 
 void stateGameNextLevel()
 {
+  level++;
   gameState = STATE_GAME_PLAYING;
 };
 
@@ -33,7 +33,7 @@ void stateGamePlaying()
 
 void stateGamePause()
 {
-  if (buttons.justPressed(A_BUTTON)) gameState = STATE_GAME_PLAYING;
+  if (arduboy.justPressed(A_BUTTON)) gameState = STATE_GAME_PLAYING;
 };
 
 void stateGameOver()

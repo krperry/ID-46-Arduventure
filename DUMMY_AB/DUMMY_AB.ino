@@ -33,7 +33,6 @@ const FunctionPointer PROGMEM mainGameLoop[] = {
   stateMenuPlay,
   stateMenuInfo,
   stateMenuSoundfx,
-  stateGamePrepareLevel,
   stateGameNextLevel,
   stateGamePlaying,
   stateGamePause,
@@ -44,8 +43,6 @@ const FunctionPointer PROGMEM mainGameLoop[] = {
 void setup() {
   arduboy.start();
   arduboy.setFrameRate(60);                                 // set the frame rate of the game at 60 fps
-  gameState = STATE_MENU_INTRO;                             // start the game with the TEAM a.r.g. logo
-  menuSelection = STATE_MENU_PLAY;                          // PLAY menu item is pre-selected
   if (EEPROM.read(EEPROM_AUDIO_ON_OFF)) soundYesNo = true;  // check EEPROM if sound is OFF or ON
   arduboy.initRandomSeed();
 }
@@ -53,9 +50,7 @@ void setup() {
 
 void loop() {
   if (!(arduboy.nextFrame())) return;
-  buttons.poll();
-  if (soundYesNo == true) arduboy.audio.on();
-  else arduboy.audio.off();
+  arduboy.poll();
   arduboy.clearDisplay();
   ((FunctionPointer) pgm_read_word (&mainGameLoop[gameState]))();
   arduboy.display();

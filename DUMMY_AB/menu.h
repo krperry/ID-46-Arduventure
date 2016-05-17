@@ -6,16 +6,17 @@
 
 void stateMenuIntro()
 {
-  counter++;
-  arduboy.drawBitmap(0, 8, TEAMarg, 128, 48, WHITE);
-  if (counter > 180) gameState = STATE_MENU_MAIN;
+  globalCounter++;
+  for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32*i, 10, TEAMarg, i);
+  sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
+  if (globalCounter > 180) gameState = STATE_MENU_MAIN;
 }
 
 void stateMenuMain()
 {
-  arduboy.drawBitmap(0, 0, titleScreen, 128, 64, WHITE);
   for (byte i = 0; i < 4; i++)
   {
+    sprites.drawSelfMasked(i*32,0, titleScreen, i);
     {
       if (((2 + i) - menuSelection) != 0)
       {
@@ -24,29 +25,29 @@ void stateMenuMain()
       if (((2 + i) - menuSelection) == 0) sprites.drawSelfMasked(21 + (22 * i), 56, menuText, i);
     }
   }
-  if (buttons.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
-  if (buttons.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
-  if (buttons.justPressed(B_BUTTON)) gameState = menuSelection;
+  if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
+  if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
+  if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
 }
 
 void stateMenuHelp()
 {
-  arduboy.drawBitmap(32, 0, qrcode, 64, 64, WHITE);
-  if (buttons.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
+  for (byte i = 0; i < 2; i++) sprites.drawSelfMasked(32, 32*i, qrcode, i);
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 
 
 void stateMenuInfo()
 {
-  arduboy.drawBitmap(16, 20, info, 96, 24, WHITE);
-  if (buttons.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
+  sprites.drawSelfMasked(16, 36, info, 0);
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
 }
 
 void stateMenuSoundfx()
 {
-  if (buttons.justPressed(DOWN_BUTTON)) soundYesNo = true;
-  if (buttons.justPressed(UP_BUTTON)) soundYesNo = false;
-  if (buttons.justPressed(A_BUTTON | B_BUTTON))
+  if (arduboy.justPressed(RIGHT_BUTTON)) soundYesNo = true;
+  if (arduboy.justPressed(LEFT_BUTTON)) soundYesNo = false;
+  if (arduboy.justPressed(A_BUTTON | B_BUTTON))
   {
     arduboy.audio.saveOnOff();
     gameState = STATE_MENU_MAIN;
@@ -55,11 +56,5 @@ void stateMenuSoundfx()
   else arduboy.audio.off();
 }
 
-void stateMenuPlay()
-{
-  level = 0;
-  scorePlayer = 0;
-  gameState = STATE_GAME_PREPARE_LEVEL;
-}
 
 #endif

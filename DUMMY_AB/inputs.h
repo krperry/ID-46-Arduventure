@@ -8,33 +8,33 @@
 void checkInputs()
 {
   player.walking = false;
-  if (buttons.pressed(DOWN_BUTTON) && (player.y < GAME_BOTTOM))
+  if (arduboy.pressed(DOWN_BUTTON) && (player.y < GAME_BOTTOM))
   {
     player.direction = FACING_SOUTH;
     player.y++;
     player.walking = true;
   }
-  if (buttons.pressed(LEFT_BUTTON) && (player.x > GAME_LEFT))
+  if (arduboy.pressed(LEFT_BUTTON) && (player.x > GAME_LEFT))
   {
     player.direction = FACING_WEST;
     player.x--;
     player.walking = true;
   }
-  if (buttons.pressed(UP_BUTTON) && (player.y > GAME_TOP))
+  if (arduboy.pressed(UP_BUTTON) && (player.y > GAME_TOP))
   {
     player.direction = FACING_NORTH;
     player.y--;
     player.walking = true;
   }
-  if (buttons.pressed(RIGHT_BUTTON) && (player.x < GAME_RIGHT))
+  if (arduboy.pressed(RIGHT_BUTTON) && (player.x < GAME_RIGHT))
   {
     player.direction = FACING_EAST;
     player.x++;
     player.walking = true;
   }
 
-  if (buttons.justPressed(A_BUTTON)) gameState = STATE_GAME_PAUSE;
-  if (buttons.justPressed(B_BUTTON));
+  if (arduboy.justPressed(A_BUTTON)) gameState = STATE_GAME_PAUSE;
+  if (arduboy.justPressed(B_BUTTON));
 }
 
 

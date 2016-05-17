@@ -12,6 +12,7 @@ struct Players
     boolean walking;
     byte direction;
     byte frame;
+    unsigned long score; 
 };
 
 Players player = { .x = 20, .y = 20, .walking = false, .direction = FACING_SOUTH, .frame = 0 };

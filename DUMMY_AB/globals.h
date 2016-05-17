@@ -14,11 +14,10 @@
 #define STATE_MENU_SOUNDFX           5
 
 //define game states (on main menu)
-#define STATE_GAME_PREPARE_LEVEL     6
-#define STATE_GAME_NEXT_LEVEL        7
-#define STATE_GAME_PLAYING           8
-#define STATE_GAME_PAUSE             9
-#define STATE_GAME_OVER              10
+#define STATE_GAME_NEXT_LEVEL        6
+#define STATE_GAME_PLAYING           7
+#define STATE_GAME_PAUSE             8
+#define STATE_GAME_OVER              9
 
 #define GAME_TOP                     0
 #define GAME_BOTTOM                  48
@@ -30,17 +29,17 @@
 #define FACING_NORTH                 2
 #define FACING_EAST                  3
 
+#define FIRST_LEVEL                  0
+
 
 Arduboy arduboy;
 Sprites sprites(arduboy);
-SimpleButtons buttons (arduboy);
 Physics physics;
 
-unsigned char gameState;
-boolean soundYesNo;
-int menuSelection;
-byte counter = 0;
-byte level;
-unsigned long scorePlayer; 
+byte gameState = STATE_MENU_INTRO;   // start the game with the TEAM a.r.g. logo
+byte menuSelection = STATE_MENU_PLAY; // PLAY menu item is pre-selected
+boolean soundYesNo = false;
+byte globalCounter = 0;
+byte level = FIRST_LEVEL;
 
 #endif

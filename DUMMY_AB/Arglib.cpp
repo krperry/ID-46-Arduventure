@@ -24,12 +24,6 @@ volatile const byte *score_cursor = 0;
 
 Arduboy::Arduboy() { }
 
-// store current and previous buttons state for frame based button events
-// you should be using nextFrame() in almost all cases, not calling this
-// directly
-SimpleButtons::SimpleButtons(Arduboy &a) {
-  arduboy = &a;
-}
 
 void Arduboy::start()
 {
@@ -74,6 +68,7 @@ void Arduboy::start()
   if (pressed(LEFT_BUTTON + UP_BUTTON))
     safeMode();
 #endif
+
 
   audio.setup();
   saveMuchPower();
@@ -742,85 +737,6 @@ void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w,
   }
 }
 
-void Arduboy::drawSprite(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t frame, uint8_t color) {
-  // no need to dar at all of we're offscreen
-  if (x + w < 0 || x > WIDTH - 1 || y + h < 0 || y > HEIGHT - 1)
-    return;
-  y = y - (frame * h);
-  int yOffset = abs(y) % 8;
-  int sRow = y / 8;
-  if (y < 0) {
-    sRow--;
-    yOffset = 8 - yOffset;
-  }
-  int rows = h / 8;
-  if (h % 8 != 0) rows++;
-  for (int a = 0 + (frame * rows); a < rows + (frame * rows); a++) {
-    int bRow = sRow + a;
-    if (bRow > (HEIGHT / 8) - 1) break;
-    if (bRow > -2) {
-      for (int iCol = 0; iCol < w; iCol++) {
-        if (iCol + x > (WIDTH - 1)) break;
-        if (iCol + x >= 0) {
-          if (bRow >= 0) {
-            if (color) this->sBuffer[ (bRow * WIDTH) + x + iCol  ]  |= pgm_read_byte(bitmap + (a * w) + iCol) << yOffset;
-            else this->sBuffer[ (bRow * WIDTH) + x + iCol  ]  &= ~(pgm_read_byte(bitmap + (a * w) + iCol) << yOffset);
-          }
-          if (yOffset && bRow < (HEIGHT / 8) - 1 && bRow > -2) {
-            if (color) this->sBuffer[ ((bRow + 1)*WIDTH) + x + iCol  ] |= pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset);
-            else this->sBuffer[ ((bRow + 1)*WIDTH) + x + iCol  ] &= ~(pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset));
-          }
-        }
-      }
-    }
-  }
-}
-
-void Arduboy::drawMaskedSprite(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, const uint8_t *mask, uint8_t frame, uint8_t color) {
-  // no need to dar at all of we're offscreen
-  if (x + w < 0 || x > WIDTH - 1 || y + h < 0 || y > HEIGHT - 1)
-    return;
-  y = y - (frame * h);
-  int yOffset = abs(y) % 8;
-  int sRow = y / 8;
-  if (y < 0) {
-    sRow--;
-    yOffset = 8 - yOffset;
-  }
-  int rows = h / 8;
-  if (h % 8 != 0) rows++;
-  for (int a = 0 + (frame * rows); a < rows + (frame * rows); a++) {
-    int bRow = sRow + a;
-    if (bRow > (HEIGHT / 8) - 1) break;
-    if (bRow > -2) {
-      for (int iCol = 0; iCol < w; iCol++) {
-        if (iCol + x > (WIDTH - 1)) break;
-        if (iCol + x >= 0) {
-          if (bRow >= 0) {
-            if (color) {
-              this->sBuffer[ (bRow * WIDTH) + x + iCol  ]  &= ~(pgm_read_byte(mask + (a * w) + iCol) << yOffset);
-              this->sBuffer[ (bRow * WIDTH) + x + iCol  ]  |= pgm_read_byte(bitmap + (a * w) + iCol) << yOffset;
-            }
-            else {
-              this->sBuffer[ (bRow * WIDTH) + x + iCol  ]  |= pgm_read_byte(mask + (a * w) + iCol) << yOffset;
-              this->sBuffer[ (bRow * WIDTH) + x + iCol  ]  &= ~(pgm_read_byte(bitmap + (a * w) + iCol) << yOffset);
-            }
-          }
-          if (yOffset && bRow < (HEIGHT / 8) - 1 && bRow > -2) {
-            if (color) {
-              this->sBuffer[ ((bRow + 1)*WIDTH) + x + iCol  ] &= ~(pgm_read_byte(mask + (a * w) + iCol) >> (8 - yOffset));
-              this->sBuffer[ ((bRow + 1)*WIDTH) + x + iCol  ] |= pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset);
-            }
-            else {
-              this->sBuffer[ ((bRow + 1)*WIDTH) + x + iCol  ] |= pgm_read_byte(mask + (a * w) + iCol) >> (8 - yOffset);
-              this->sBuffer[ ((bRow + 1)*WIDTH) + x + iCol  ] &= ~(pgm_read_byte(bitmap + (a * w) + iCol) >> (8 - yOffset));
-            }
-          }
-        }
-      }
-    }
-  }
-}
 
 
 typedef struct CSESSION {
@@ -1106,6 +1022,13 @@ uint8_t Arduboy::height() {
   return HEIGHT;
 }
 
+
+void Arduboy::poll()
+{
+  previousButtonState = currentButtonState;
+  currentButtonState = getInput();
+}
+
 // returns true if the button mask passed in is pressed
 //
 //   if (pressed(LEFT_BUTTON + A_BUTTON))
@@ -1118,11 +1041,21 @@ boolean Arduboy::pressed(uint8_t buttons)
 // returns true if the button mask passed in not pressed
 //
 //   if (not_pressed(LEFT_BUTTON))
-boolean Arduboy::not_pressed(uint8_t buttons)
+boolean Arduboy::notPressed(uint8_t buttons)
 {
   uint8_t button_state = getInput();
   return (button_state & buttons) == 0;
 }
+
+// returns true if a button has just been pressed
+// if the button has been held down for multiple frames this will return
+// false.  You should only use this to poll a single button.
+boolean Arduboy::justPressed(uint8_t button)
+{
+  uint8_t button_state = getInput();
+  return (!(previousButtonState & button) && (currentButtonState & button));
+}
+
 
 
 uint8_t Arduboy::getInput()
@@ -1156,29 +1089,6 @@ void Arduboy::swap(int16_t& a, int16_t& b) {
   b = temp;
 }
 
-
-void SimpleButtons::poll()
-{
-  previousButtonState = currentButtonState;
-  currentButtonState = arduboy->getInput();
-}
-// returns true if a button has just been pressed
-// if the button has been held down for multiple frames this will return
-// false.  You should only use this to poll a single button.
-boolean SimpleButtons::justPressed(uint8_t button)
-{
-  return (!(previousButtonState & button) && (currentButtonState & button));
-}
-
-boolean SimpleButtons::pressed(uint8_t buttons)
-{
-  return (currentButtonState & buttons) == buttons;
-}
-
-boolean SimpleButtons::notPressed(uint8_t buttons)
-{
-  return (currentButtonState & buttons) == 0;
-}
 
 /* AUDIO */
 
@@ -1468,7 +1378,12 @@ ISR(TIMER3_COMPA_vect) {  // TIMER 3
 }
 
 
-///////////////
+
+
+
+/////////////////////////
+// Sprites by Dreamer3 //
+/////////////////////////
 Sprites::Sprites(Arduboy &a)
 {
   arduboy = &a;
@@ -1869,7 +1784,6 @@ void Sprites::drawBitmap(int16_t x, int16_t y,
         [sprite_ofs_jump] "r" ((w-rendered_width)*2),
         [yOffset] "r" (yOffset),
         [mul_amt] "r" (mul_amt)
-
         :
       );
       break;
@@ -1877,10 +1791,10 @@ void Sprites::drawBitmap(int16_t x, int16_t y,
   }
 }
 
+
 /////////////////////////////////
 // Basic Collision by Dreamer3 //
 /////////////////////////////////
-
 bool Physics::collide(Point point, Rect rect)
 {
   // does point fall within the bounds of rect
