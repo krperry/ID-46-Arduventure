@@ -1390,19 +1390,6 @@ Sprites::Sprites(Arduboy &a)
   sBuffer = arduboy->getBuffer();
 }
 
-SimpleSprite::SimpleSprite(int x, int y, const uint8_t *bitmap) :
-  x(x), y(y), bitmap(bitmap)
-{
-}
-
-Sprite::Sprite(int x, int y, const uint8_t *bitmap) :
-  SimpleSprite(x, y, bitmap) {
-}
-
-Sprite::Sprite(int x, int y, const uint8_t *bitmap, const uint8_t *mask) :
-  SimpleSprite(x, y, bitmap), mask(mask) {
-}
-
 // new API
 
 void Sprites::drawExternalMask(int16_t x, int16_t y, const uint8_t *bitmap,
@@ -1432,40 +1419,7 @@ void Sprites::drawPlusMask(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t 
 }
 
 
-// older api and common functions
-
-void Sprites::draw(Sprite sprite)
-{
-  draw(sprite.x, sprite.y,
-       sprite.bitmap, sprite.frame,
-       sprite.mask, sprite.maskFrame,
-       sprite.drawMode);
-}
-
-void Sprites::draw(SimpleSprite sprite)
-{
-  draw(sprite.x, sprite.y,
-       sprite.bitmap, sprite.frame,
-       NULL, 0,
-       sprite.drawMode);
-}
-
-void Sprites::draw(int16_t x, int16_t y, const uint8_t *bitmap)
-{
-  draw(x, y, bitmap, 0, NULL, 0, SPRITE_AUTO_MODE);
-}
-
-void Sprites::draw(int16_t x, int16_t y, const uint8_t *bitmap, const uint8_t *mask)
-{
-  draw(x, y, bitmap, 0, mask, 0, SPRITE_AUTO_MODE);
-}
-
-void Sprites::draw(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t frame)
-{
-  draw(x, y, bitmap, frame, NULL, 0, SPRITE_AUTO_MODE);
-}
-
-
+//common functions
 void Sprites::draw(int16_t x, int16_t y,
                    const uint8_t *bitmap, uint8_t frame,
                    const uint8_t *mask, uint8_t sprite_frame,
@@ -1499,11 +1453,6 @@ void Sprites::draw(int16_t x, int16_t y,
 
   drawBitmap(x, y, bitmap, mask, width, height, drawMode);
 }
-
-// should we still even support these modes?
-// void Sprites::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
-// drawComplexBitmap(x, y, bitmap, NULL, w, h, color ? SPRITE_IS_MASK : SPRITE_IS_MASK_ERASE);
-// }
 
 void Sprites::drawBitmap(int16_t x, int16_t y,
                          const uint8_t *bitmap, const uint8_t *mask,
