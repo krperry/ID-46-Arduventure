@@ -29,12 +29,13 @@
 //#define AB_DEVKIT    //< compile for the official dev kit
 #endif
 
-
+/*
 #define AVAILABLE_TIMERS 2
-#define TUNE_OP_PLAYNOTE  0x90  /* play a note: low nibble is generator #, note is next byte */
-#define TUNE_OP_STOPNOTE  0x80  /* stop a note: low nibble is generator # */
-#define TUNE_OP_RESTART 0xe0  /* restart the score from the beginning */
-#define TUNE_OP_STOP  0xf0  /* stop playing */
+#define TUNE_OP_PLAYNOTE  0x90  // play a note: low nibble is generator #, note is next byte
+#define TUNE_OP_STOPNOTE  0x80  // stop a note: low nibble is generator #
+#define TUNE_OP_RESTART 0xe0  // restart the score from the beginning
+#define TUNE_OP_STOP  0xf0  // stop playing
+*/
 
 // EEPROM settings
 
@@ -129,13 +130,13 @@ class ArduboyAudio
     void off();
     void saveOnOff();
     bool enabled();
-    void tone(uint8_t channel, unsigned int frequency, unsigned long duration);
+    void tone(unsigned int frequency, unsigned long duration);
 
   protected:
     bool audio_enabled = false;
 };
 
-
+/*
 class ArduboyTunes
 {
   public:
@@ -158,6 +159,7 @@ class ArduboyTunes
     void static playNote (byte chan, byte note);
     void static stopNote (byte chan);
 };
+*/
 
 struct Rect
 {
@@ -209,8 +211,6 @@ class Arduboy : public Print
     void fillScreen(uint8_t color);
     void drawRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color);
     void fillRoundRect(int16_t x, int16_t y, int16_t w, int16_t h, int16_t r, uint8_t color);
-    void drawTriangle(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
-    void fillTriangle (int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color);
     void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color);
     void drawCompressed(int16_t sx, int16_t sy, const uint8_t *bitmap, uint8_t color);
     unsigned char* getBuffer();
@@ -220,7 +220,7 @@ class Arduboy : public Print
     void initRandomSeed();
     void swap(int16_t& a, int16_t& b);
 
-    ArduboyTunes tunes;
+    //ArduboyTunes tunes;
     ArduboyAudio audio;
 
     void setFrameRate(uint8_t rate);

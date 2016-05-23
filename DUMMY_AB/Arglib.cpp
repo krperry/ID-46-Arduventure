@@ -1,5 +1,6 @@
 #include "Arglib.h"
 
+/*
 const byte PROGMEM tune_pin_to_timer_PGM[] = { 3, 1 };
 volatile byte *_tunes_timer1_pin_port;
 volatile byte _tunes_timer1_pin_mask;
@@ -9,18 +10,19 @@ volatile byte _tunes_timer3_pin_mask;
 byte _tune_pins[AVAILABLE_TIMERS];
 byte _tune_num_chans = 0;
 volatile boolean tune_playing; // is the score still playing?
-volatile unsigned wait_timer_frequency2;       /* its current frequency */
-volatile unsigned wait_timer_old_frequency2;   /* its previous frequency */
-volatile boolean wait_timer_playing = false;   /* is it currently playing a note? */
-volatile boolean doing_delay = false;          /* are we using it for a tune_delay()? */
+volatile unsigned wait_timer_frequency2;       // its current frequency
+volatile unsigned wait_timer_old_frequency2;   // its previous frequency
+volatile boolean wait_timer_playing = false;   // is it currently playing a note?
+volatile boolean doing_delay = false;          // are we using it for a tune_delay()?
 volatile boolean tonePlaying = false;
-volatile unsigned long wait_toggle_count;      /* countdown score waits */
-volatile unsigned long delay_toggle_count;     /* countdown tune_ delay() delays */
+volatile unsigned long wait_toggle_count;      // countdown score waits
+volatile unsigned long delay_toggle_count;     // countdown tune_ delay() delays
 
 
 // pointers to your musical score and your position in said score
 volatile const byte *score_start = 0;
 volatile const byte *score_cursor = 0;
+*/
 
 Arduboy::Arduboy() { }
 
@@ -40,12 +42,14 @@ void Arduboy::start()
   pinMode(PIN_DOWN_BUTTON, INPUT_PULLUP);
   pinMode(PIN_A_BUTTON, INPUT_PULLUP);
   pinMode(PIN_B_BUTTON, INPUT_PULLUP);
-  tunes.initChannel(PIN_SPEAKER_1);
+  //tunes.initChannel(PIN_SPEAKER_1);
+/*
 #ifdef AB_DEVKIT
   tunes.initChannel(PIN_SPEAKER_1); // use the same pin for both channels
 #else
-  tunes.initChannel(PIN_SPEAKER_2);
+ tunes.initChannel(PIN_SPEAKER_2);
 #endif
+*/
 
   csport = portOutputRegister(digitalPinToPort(CS));
   cspinmask = digitalPinToBitMask(CS);
@@ -592,117 +596,6 @@ void Arduboy::fillRoundRect
   fillCircleHelper(x + r, y + r, r, 2, h - 2 * r - 1, color);
 }
 
-void Arduboy::drawTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
-{
-  drawLine(x0, y0, x1, y1, color);
-  drawLine(x1, y1, x2, y2, color);
-  drawLine(x2, y2, x0, y0, color);
-}
-
-void Arduboy::fillTriangle
-(int16_t x0, int16_t y0, int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint8_t color)
-{
-
-  int16_t a, b, y, last;
-  // Sort coordinates by Y order (y2 >= y1 >= y0)
-  if (y0 > y1)
-  {
-    swap(y0, y1); swap(x0, x1);
-  }
-  if (y1 > y2)
-  {
-    swap(y2, y1); swap(x2, x1);
-  }
-  if (y0 > y1)
-  {
-    swap(y0, y1); swap(x0, x1);
-  }
-
-  if (y0 == y2)
-  { // Handle awkward all-on-same-line case as its own thing
-    a = b = x0;
-    if (x1 < a)
-    {
-      a = x1;
-    }
-    else if (x1 > b)
-    {
-      b = x1;
-    }
-    if (x2 < a)
-    {
-      a = x2;
-    }
-    else if (x2 > b)
-    {
-      b = x2;
-    }
-    drawFastHLine(a, y0, b - a + 1, color);
-    return;
-  }
-
-  int16_t dx01 = x1 - x0,
-          dy01 = y1 - y0,
-          dx02 = x2 - x0,
-          dy02 = y2 - y0,
-          dx12 = x2 - x1,
-          dy12 = y2 - y1,
-          sa = 0,
-          sb = 0;
-
-  // For upper part of triangle, find scanline crossings for segments
-  // 0-1 and 0-2.  If y1=y2 (flat-bottomed triangle), the scanline y1
-  // is included here (and second loop will be skipped, avoiding a /0
-  // error there), otherwise scanline y1 is skipped here and handled
-  // in the second loop...which also avoids a /0 error here if y0=y1
-  // (flat-topped triangle).
-  if (y1 == y2)
-  {
-    last = y1;   // Include y1 scanline
-  }
-  else
-  {
-    last = y1 - 1; // Skip it
-  }
-
-
-  for (y = y0; y <= last; y++)
-  {
-    a   = x0 + sa / dy01;
-    b   = x0 + sb / dy02;
-    sa += dx01;
-    sb += dx02;
-
-    if (a > b)
-    {
-      swap(a, b);
-    }
-
-    drawFastHLine(a, y, b - a + 1, color);
-  }
-
-  // For lower part of triangle, find scanline crossings for segments
-  // 0-2 and 1-2.  This loop is skipped if y1=y2.
-  sa = dx12 * (y - y1);
-  sb = dx02 * (y - y0);
-
-  for (; y <= y2; y++)
-  {
-    a   = x1 + sa / dy12;
-    b   = x0 + sb / dy02;
-    sa += dx12;
-    sb += dx02;
-
-    if (a > b)
-    {
-      swap(a, b);
-    }
-
-    drawFastHLine(a, y, b - a + 1, color);
-  }
-}
-
 void Arduboy::drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
   // no need to dar at all of we're offscreen
   if (x + w < 0 || x > WIDTH - 1 || y + h < 0 || y > HEIGHT - 1)
@@ -1002,8 +895,8 @@ void Arduboy::swap(int16_t& a, int16_t& b) {
 /* AUDIO */
 
 void ArduboyAudio::on() {
-  power_timer1_enable();
-  power_timer3_enable();
+  pinMode(PIN_SPEAKER_1, OUTPUT);
+  pinMode(PIN_SPEAKER_2, OUTPUT);
   audio_enabled = true;
 }
 
@@ -1012,9 +905,9 @@ bool ArduboyAudio::enabled() {
 }
 
 void ArduboyAudio::off() {
+  pinMode(PIN_SPEAKER_1, INPUT);
+  pinMode(PIN_SPEAKER_2, INPUT);
   audio_enabled = false;
-  power_timer1_disable();
-  power_timer3_disable();
 }
 
 void ArduboyAudio::saveOnOff() {
@@ -1022,20 +915,19 @@ void ArduboyAudio::saveOnOff() {
 }
 
 void ArduboyAudio::setup() {
-  tune_playing = false;
   if (EEPROM.read(EEPROM_AUDIO_ON_OFF))
     on();
 }
 
-void ArduboyAudio::tone(uint8_t channel, unsigned int frequency, unsigned long duration)
+void ArduboyAudio::tone(unsigned int frequency, unsigned long duration)
 {
-  // if (audio_enabled)
-  // ::tone(channel, frequency, duration);
+  if (audio_enabled)
+  ::tone(PIN_SPEAKER_1, frequency, duration);
 }
 
 
 /* TUNES */
-
+/*
 void ArduboyTunes::initChannel(byte pin) {
   byte timer_num;
 
@@ -1063,17 +955,18 @@ void ArduboyTunes::initChannel(byte pin) {
       bitWrite(TCCR3B, CS30, 1);
       _tunes_timer3_pin_port = portOutputRegister(digitalPinToPort(pin));
       _tunes_timer3_pin_mask = digitalPinToBitMask(pin);
-      playNote(0, 60);  /* start and stop channel 0 (timer 3) on middle C so wait/delay works */
+      playNote(0, 60);  // start and stop channel 0 (timer 3) on middle C so wait/delay works 
       stopNote(0);
       break;
   }
 }
+*/
 
-
+/*
 void ArduboyTunes::playNote(byte chan, byte note) {
   byte timer_num;
   byte prescalar_bits;
-  unsigned int frequency2; /* frequency times 2 */
+  unsigned int frequency2; // frequency times 2
   unsigned long ocr;
 
   // we can't plan on a channel that does not exist
@@ -1111,7 +1004,9 @@ void ArduboyTunes::playNote(byte chan, byte note) {
       break;
   }
 }
+*/
 
+/*
 void ArduboyTunes::stopNote(byte chan) {
   byte timer_num;
   timer_num = pgm_read_byte(tune_pin_to_timer_PGM + chan);
@@ -1126,27 +1021,29 @@ void ArduboyTunes::stopNote(byte chan) {
       break;
   }
 }
-
+*/
+/*
 void ArduboyTunes::playScore(const byte *score) {
   score_start = score;
   score_cursor = score_start;
-  step();  /* execute initial commands */
-  tune_playing = true;  /* release the interrupt routine */
+  step();  // execute initial commands
+  tune_playing = true;  // release the interrupt routine
 }
+*/
 
-
-
+/*
 bool ArduboyTunes::playing()
 {
   return tune_playing;
 }
-
+*/
 
 /* Do score commands until a "wait" is found, or the score is stopped.
 This is called initially from tune_playcore, but then is called
 from the interrupt routine when waits expire.
 */
 /* if CMD < 0x80, then the other 7 bits and the next byte are a 15-bit big-endian number of msec to wait */
+/*
 void ArduboyTunes::step() {
   byte command, opcode, chan;
   unsigned duration;
@@ -1155,20 +1052,20 @@ void ArduboyTunes::step() {
     command = pgm_read_byte(score_cursor++);
     opcode = command & 0xf0;
     chan = command & 0x0f;
-    if (opcode == TUNE_OP_STOPNOTE) { /* stop note */
+    if (opcode == TUNE_OP_STOPNOTE) { // stop note 
       stopNote(chan);
     }
-    else if (opcode == TUNE_OP_PLAYNOTE) { /* play note */
+    else if (opcode == TUNE_OP_PLAYNOTE) { // play note
       playNote(chan, pgm_read_byte(score_cursor++));
     }
-    else if (opcode == TUNE_OP_RESTART) { /* restart score */
+    else if (opcode == TUNE_OP_RESTART) { // restart score
       score_cursor = score_start;
     }
-    else if (opcode == TUNE_OP_STOP) { /* stop score */
+    else if (opcode == TUNE_OP_STOP) { // stop score
       tune_playing = false;
       break;
     }
-    else if (opcode < 0x80) { /* wait count in msec. */
+    else if (opcode < 0x80) { // wait count in msec.
       duration = ((unsigned)command << 8) | (pgm_read_byte(score_cursor++));
       wait_toggle_count = ((unsigned long) wait_timer_frequency2 * duration + 500) / 1000;
       if (wait_toggle_count == 0) wait_toggle_count = 1;
@@ -1176,7 +1073,9 @@ void ArduboyTunes::step() {
     }
   }
 }
+*/
 
+/*
 void ArduboyTunes::delay (unsigned duration) {
   boolean notdone;
   noInterrupts();
@@ -1185,13 +1084,14 @@ void ArduboyTunes::delay (unsigned duration) {
   interrupts();
   do { // wait until the interrupt routines decrements the toggle count to zero
     noInterrupts();
-    notdone = delay_toggle_count != 0;  /* interrupt-safe test */
+    notdone = delay_toggle_count != 0;  // interrupt-safe test
     interrupts();
   }
   while (notdone);
   doing_delay = false;
 }
-
+*/
+/*
 void ArduboyTunes::closeChannels(void) {
   byte timer_num;
   for (uint8_t chan = 0; chan < _tune_num_chans; chan++) {
@@ -1209,7 +1109,9 @@ void ArduboyTunes::closeChannels(void) {
   _tune_num_chans = 0;
   tune_playing = false;
 }
+*/
 
+/*
 void ArduboyTunes::soundOutput()
 {
   if (wait_timer_playing) { // toggle the pin if we're sounding a note
@@ -1233,7 +1135,9 @@ void ArduboyTunes::soundOutput()
   }
   if (doing_delay && delay_toggle_count) --delay_toggle_count;  // countdown for tune_delay()
 }
+*/
 
+/*
 void ArduboyTunes::tone(unsigned int frequency, unsigned long duration) {
   tonePlaying = true;
   uint8_t prescalarbits = 0b001;
@@ -1286,7 +1190,7 @@ ISR(TIMER3_COMPA_vect) {  // TIMER 3
   // and use it to time score waits, whether or not it is playing a note.
   ArduboyTunes::soundOutput();
 }
-
+*/
 
 
 

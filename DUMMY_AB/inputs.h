@@ -34,7 +34,7 @@ void checkInputs()
   }
 
   if (arduboy.justPressed(A_BUTTON)) gameState = STATE_GAME_PAUSE;
-  if (arduboy.justPressed(B_BUTTON)) arduboy.tunes.tone(880, 20);
+  if (arduboy.justPressed(B_BUTTON)) arduboy.audio.tone(880, 20);
 }
 
 
