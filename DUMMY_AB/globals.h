@@ -34,7 +34,6 @@
 
 Arduboy arduboy;
 Sprites sprites(arduboy);
-Physics physics;
 
 byte gameState = STATE_MENU_INTRO;   // start the game with the TEAM a.r.g. logo
 byte menuSelection = STATE_MENU_PLAY; // PLAY menu item is pre-selected

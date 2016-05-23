@@ -159,6 +159,21 @@ class ArduboyTunes
     void static stopNote (byte chan);
 };
 
+struct Rect
+{
+  public:
+    int x;
+    int y;
+    uint8_t width;
+    uint8_t height;
+};
+
+struct Point
+{
+  public:
+    int x;
+    int y;
+};
 
 class Arduboy : public Print
 {
@@ -220,6 +235,9 @@ class Arduboy : public Print
     bool post_render = false;
     uint8_t lastFrameDurationMs = 0;
 
+    bool static collide(Point point, Rect rect);
+    bool static collide(Rect rect, Rect rect2);
+
   private:
     unsigned char sBuffer[(HEIGHT * WIDTH) / 8];
 
@@ -233,13 +251,6 @@ class Arduboy : public Print
     uint8_t mosipinmask, clkpinmask, cspinmask, dcpinmask;
     uint8_t currentButtonState = 0;
     uint8_t previousButtonState = 0;
-
-    // Adafruit stuff
-  protected:
-    int16_t cursor_x = 0;
-    int16_t cursor_y = 0;
-    uint8_t textsize = 1;
-    boolean wrap; // If set, 'wrap' text at right edge of display
 };
 
 
@@ -250,11 +261,7 @@ class Sprites
 {
   public:
     Sprites(Arduboy &arduboy);
-
-    void draw(int16_t x, int16_t y, const uint8_t *bitmap);
-    void draw(int16_t x, int16_t y, const uint8_t *bitmap, const uint8_t *mask);
-    void draw(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t frame);
-
+    
     // drawExternalMask() uses a separate mask to mask image (MASKED)
     //
     // image  mask   before  after
@@ -273,8 +280,7 @@ class Sprites
     // ..O..  OOOOO  OOOOO   ..O..
     // .....  .OOO.  OOOOO   O...O
     //
-    void drawExternalMask(int16_t x, int16_t y, const uint8_t *bitmap,
-                          const uint8_t *mask, uint8_t frame, uint8_t mask_frame);
+    void drawExternalMask(int16_t x, int16_t y, const uint8_t *bitmap, const uint8_t *mask, uint8_t frame, uint8_t mask_frame);
 
     // drawPlusMask has the same behavior as drawExternalMask except the
     // data is arranged in byte tuples interposing the mask right along
@@ -310,8 +316,7 @@ class Sprites
     // ..O..  OOOOO   ..O..
     // .....  OOOOO   .....
     //
-    void drawOverwrite(int16_t x, int16_t y,
-                       const uint8_t *bitmap, uint8_t frame);
+    void drawOverwrite(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t frame);
 
     // drawErase() removes the lit pixels in the image from the display
     // (SPRITE_IS_MASK_ERASE)
@@ -355,47 +360,15 @@ class Sprites
     // .....  OOOOO   OOOOO
     //
     void drawSelfMasked(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t frame);
-
     // master function, needs to be abstracted into sep function for
     // every render type
-    void draw(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t frame,
-              const uint8_t *mask, uint8_t sprite_frame, uint8_t drawMode);
-
-    void drawBitmap(int16_t x, int16_t y,
-                    const uint8_t *bitmap, const uint8_t *mask,
-                    int8_t w, int8_t h, uint8_t draw_mode);
+    void draw(int16_t x, int16_t y, const uint8_t *bitmap, uint8_t frame, const uint8_t *mask, uint8_t sprite_frame, uint8_t drawMode);
+    void drawBitmap(int16_t x, int16_t y, const uint8_t *bitmap, const uint8_t *mask, int8_t w, int8_t h, uint8_t draw_mode);
 
   private:
 
     Arduboy *arduboy;
     unsigned char *sBuffer;
-};
-
-/////////////////////////////////
-// Basic Collision by Dreamer3 //
-/////////////////////////////////
-
-struct Rect
-{
-  public:
-    int x;
-    int y;
-    uint8_t width;
-    uint8_t height;
-};
-
-struct Point
-{
-  public:
-    int x;
-    int y;
-};
-
-class Physics
-{
-  public:
-    bool static collide(Point point, Rect rect);
-    bool static collide(Rect rect, Rect rect2);
 };
 
 #endif
