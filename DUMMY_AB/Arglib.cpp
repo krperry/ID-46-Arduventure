@@ -873,101 +873,9 @@ void Arduboy::drawCompressed(int16_t sx, int16_t sy, const uint8_t *bitmap, uint
   }
 }
 
-// Draw images that are bit-oriented horizontally
-//
-// This requires a lot of additional CPU power and will draw images much
-// more slowly than drawBitmap where the images are stored in a format that
-// allows them to be directly written to the screen hardware fast. It is
-// recommended you use drawBitmap when possible.
-void Arduboy::drawSlowXYBitmap(int16_t x, int16_t y, const uint8_t *bitmap, int16_t w, int16_t h, uint8_t color) {
-  // no need to dar at all of we're offscreen
-  if (x + w < 0 || x > WIDTH - 1 || y + h < 0 || y > HEIGHT - 1)
-    return;
-
-  int16_t xi, yi, byteWidth = (w + 7) / 8;
-  for (yi = 0; yi < h; yi++) {
-    for (xi = 0; xi < w; xi++ ) {
-      if (pgm_read_byte(bitmap + yi * byteWidth + xi / 8) & (128 >> (xi & 7))) {
-        drawPixel(x + xi, y + yi, color);
-      }
-    }
-  }
-}
-
-
-void Arduboy::drawChar
-(int16_t x, int16_t y, unsigned char c, uint8_t color, uint8_t bg, uint8_t size)
-{
-
-  if ((x >= WIDTH) ||         // Clip right
-      (y >= HEIGHT) ||        // Clip bottom
-      ((x + 5 * size - 1) < 0) ||   // Clip left
-      ((y + 8 * size - 1) < 0)    // Clip top
-     )
-  {
-    return;
-  }
-
-  for (int8_t i = 0; i < 6; i++ )
-  {
-    uint8_t line;
-    if (i == 5)
-    {
-      line = 0x0;
-    }
-    else
-    {
-      // line = pgm_read_byte(font+(c*5)+i);
-    }
-
-    for (int8_t j = 0; j < 8; j++)
-    {
-      if (line & 0x1)
-      {
-        if (size == 1) // default size
-        {
-          drawPixel(x + i, y + j, color);
-        }
-        else  // big size
-        {
-          fillRect(x + (i * size), y + (j * size), size, size, color);
-        }
-      }
-      else if (bg != color)
-      {
-        if (size == 1) // default size
-        {
-          drawPixel(x + i, y + j, bg);
-        }
-        else
-        { // big size
-          fillRect(x + i * size, y + j * size, size, size, bg);
-        }
-      }
-
-      line >>= 1;
-    }
-  }
-}
-
-void Arduboy::setCursor(int16_t x, int16_t y)
-{
-  cursor_x = x;
-  cursor_y = y;
-}
-
-void Arduboy::setTextSize(uint8_t s)
-{
-  textsize = (s > 0) ? s : 1;
-}
-
-void Arduboy::setTextWrap(boolean w)
-{
-  wrap = w;
-}
 
 size_t Arduboy::write(uint8_t c)
-{
+{/*
   if (c == '\n')
   {
     cursor_y += textsize * 8;
@@ -979,7 +887,7 @@ size_t Arduboy::write(uint8_t c)
   }
   else
   {
-    drawChar(cursor_x, cursor_y, c, 1, 0, textsize);
+    //drawChar(cursor_x, cursor_y, c, 1, 0, textsize);
     cursor_x += textsize * 6;
     if (wrap && (cursor_x > (WIDTH - textsize * 6)))
     {
@@ -987,6 +895,7 @@ size_t Arduboy::write(uint8_t c)
       cursor_x = 0;
     }
   }
+  */
 }
 
 void Arduboy::display()
