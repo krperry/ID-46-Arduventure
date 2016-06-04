@@ -29,13 +29,6 @@
 //#define AB_DEVKIT    //< compile for the official dev kit
 #endif
 
-<<<<<<< Updated upstream
-=======
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
->>>>>>> Stashed changes
 // EEPROM settings
 
 #define EEPROM_VERSION 0
