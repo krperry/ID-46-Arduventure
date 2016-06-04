@@ -29,6 +29,13 @@
 //#define AB_DEVKIT    //< compile for the official dev kit
 #endif
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 // EEPROM settings
 
 #define EEPROM_VERSION 0
@@ -74,6 +81,7 @@
 #define PIN_B_BUTTON A1
 
 #define PIN_SPEAKER_1 A2
+#define PIN_SPEAKER_2 A2
 // SPEAKER_2 is purposely not defined for DEVKIT as it could potentially
 // be dangerous and fry your hardware (because of the devkit wiring).
 //

@@ -901,6 +901,13 @@ void ArduboyAudio::tone(unsigned int frequency, unsigned long duration)
 }
 
 
+<<<<<<< Updated upstream
+=======
+<<<<<<< HEAD
+
+=======
+>>>>>>> origin/master
+>>>>>>> Stashed changes
 
 /////////////////////////
 // Sprites by Dreamer3 //
