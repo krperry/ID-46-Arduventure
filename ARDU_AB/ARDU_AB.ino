@@ -1,18 +1,18 @@
 /*
-  GAME NAME: http://www.team-arg.org/dummy-manual.html
+  ARDUVENTURE: http://www.team-arg.org/ardu-manual.html
 
-  Arduboy version 0.1:  http://www.team-arg.org/dummy-downloads.html
+  Arduboy version 0.1:  http://www.team-arg.org/ardu-downloads.html
 
   MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
 
-  2016 - JO3RI
+  2016 - SIEGFRIEDCROES
 
   License: MIT : https://opensource.org/licenses/MIT
 
 */
 
 //determine the game
-#define GAME_ID 00
+#define GAME_ID 46
 
 #include "Arglib.h"
 #include "globals.h"
