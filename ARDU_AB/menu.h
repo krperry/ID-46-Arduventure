@@ -1,58 +1,46 @@
-#ifndef MENU_H
-#define MENU_H
+byte currentLetter = 0;
+byte cursorX = 0;
+byte cursorY = 0;
+const unsigned char labelYourName[] = {10, 24,14,20,17,NONE,13,0,12,4,39};
 
-#include <Arduino.h>
-#include "globals.h"
+bool menuIsVisible = false;
+bool menuIsSpecific = false;
+byte menuMainChoice = 0;
 
-void stateMenuIntro()
+byte menuItemsChoice = 0;
+byte menuItemsListOffset = 0;
+byte menuItemsOldAmount = 0;
+byte menuItemsLastSelectedItem = 0;
+
+const unsigned char menuLabelItems[] = {5, 8,19,4,12,18};
+const unsigned char menuLabelStats[] = {5, 18,19,0,19,18};
+const unsigned char menuLabelSave[] = {4, 18,0,21,4};
+
+const unsigned char *menuLabels[] =
 {
-  globalCounter++;
-  for (byte i = 0; i < 4; i++) sprites.drawSelfMasked(32*i, 10, TEAMarg, i);
-  sprites.drawSelfMasked(43, 50, TEAM_argPart5, 0);
-  if (globalCounter > 180) gameState = STATE_MENU_MAIN;
-}
+  menuLabelItems, menuLabelStats, menuLabelSave
+};
 
-void stateMenuMain()
+const unsigned char statsLabels0[] = 
 {
-  for (byte i = 0; i < 4; i++)
-  {
-    sprites.drawSelfMasked(i*32,0, titleScreen, i);
-    {
-      if (((2 + i) - menuSelection) != 0)
-      {
-        sprites.drawSelfMasked(21 + (22 * i), 60, menuText, i);
-      }
-      if (((2 + i) - menuSelection) == 0) sprites.drawSelfMasked(21 + (22 * i), 56, menuText, i);
-    }
-  }
-  if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5)) menuSelection++;
-  if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2)) menuSelection--;
-  if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
-}
+  37,
+  13,0,12,4,41,
+  NEWLINE,
+  12,14,13,4,24,41,47,
+  NEWLINE,NEWLINE,
+  7,15,41,
+  NEWLINE,NEWLINE,NEWLINE,
+  4,23,15,NONE,19,14,NONE,11,4,21,4,11,NONE,20,15,41,
+};
 
-void stateMenuHelp()
+const unsigned char statsLabels1[] = 
 {
-  for (byte i = 0; i < 2; i++) sprites.drawSelfMasked(32, 32*i, qrcode, i);
-  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
-}
-
-
-void stateMenuInfo()
-{
-  sprites.drawSelfMasked(16, 36, info, 0);
-  if (arduboy.justPressed(A_BUTTON | B_BUTTON)) gameState = STATE_MENU_MAIN;
-}
-
-void stateMenuSoundfx()
-{
-  if (arduboy.justPressed(RIGHT_BUTTON)) arduboy.audio.on();
-  if (arduboy.justPressed(LEFT_BUTTON)) arduboy.audio.off();
-  if (arduboy.justPressed(A_BUTTON | B_BUTTON))
-  {
-    arduboy.audio.saveOnOff();
-    gameState = STATE_MENU_MAIN;
-  }
-}
-
-
-#endif
+  19,
+  11,21,41,
+  NEWLINE,NEWLINE,
+  0,19,10,41,
+  NEWLINE,
+  3,4,5,41,
+  NEWLINE,
+  18,15,3,41,
+};
