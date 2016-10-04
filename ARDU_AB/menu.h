@@ -17,13 +17,32 @@ void stateMenuMain()
   sprites.drawSelfMasked(36, 3, aTeamArgGame, 0);
   sprites.drawSelfMasked(10, 10, titleScreen, 0);
   drawText(labelContinue, 40, 37, WHITE, ALIGN_LEFT);
-  drawText(labelNewGame, 40, 45, WHITE, ALIGN_LEFT);
-  drawText(labelSndOff, 40, 53, WHITE, ALIGN_LEFT);
-  if (arduboy.justPressed(DOWN_BUTTON) && (menuSelection < 5)) menuSelection++;
+  drawText(labelNewGame, 40, 46, WHITE, ALIGN_LEFT);
+  if (arduboy.audio.enabled()) drawText(labelSndOn, 40, 55, WHITE, ALIGN_LEFT);
+  else drawText(labelSndOff, 40, 55, WHITE, ALIGN_LEFT);
+  sprites.drawSelfMasked( 32, 37 + (menuSelection - 2) * 9, font, 43);
+  if (arduboy.justPressed(DOWN_BUTTON) && (menuSelection < 4)) menuSelection++;
   if (arduboy.justPressed(UP_BUTTON) && (menuSelection > 2)) menuSelection--;
   if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
 }
 
+void stateMenuContinue()
+{
+
+}
+
+void stateMenuNew()
+{
+
+}
+
+void stateMenuSound()
+{
+  if (arduboy.audio.enabled()) arduboy.audio.off();
+  else arduboy.audio.on();
+  arduboy.audio.saveOnOff();
+  gameState = STATE_MENU_MAIN;
+}
 
 
 #endif
