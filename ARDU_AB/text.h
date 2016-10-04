@@ -11,6 +11,7 @@
 
 const unsigned char labelContinue[] = {8, 2,14,13,19,8,13,20,4};
 const unsigned char labelNewGame[] = {8, 13,4,22,NONE,6,0,12,4};
+const unsigned char labelSndOff[] = {8, 18,13, 3,NONE,NONE,14,5,5};
 
 void drawText(const unsigned char *text, byte x, byte y, byte color, byte alignment)
 {

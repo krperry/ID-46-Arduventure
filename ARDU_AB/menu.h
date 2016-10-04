@@ -14,9 +14,11 @@ void stateMenuIntro()
 
 void stateMenuMain()
 {
-  sprites.drawSelfMasked(10, 8, titleScreen, 0);
-  drawText(labelContinue, 40, 32, WHITE, ALIGN_LEFT);
-  drawText(labelNewGame, 40, 44, WHITE, ALIGN_LEFT);
+  sprites.drawSelfMasked(36, 3, aTeamArgGame, 0);
+  sprites.drawSelfMasked(10, 10, titleScreen, 0);
+  drawText(labelContinue, 40, 37, WHITE, ALIGN_LEFT);
+  drawText(labelNewGame, 40, 45, WHITE, ALIGN_LEFT);
+  drawText(labelSndOff, 40, 53, WHITE, ALIGN_LEFT);
   //gameState = menuSelection;
 }
 
