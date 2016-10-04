@@ -19,7 +19,9 @@ void stateMenuMain()
   drawText(labelContinue, 40, 37, WHITE, ALIGN_LEFT);
   drawText(labelNewGame, 40, 45, WHITE, ALIGN_LEFT);
   drawText(labelSndOff, 40, 53, WHITE, ALIGN_LEFT);
-  //gameState = menuSelection;
+  if (arduboy.justPressed(DOWN_BUTTON) && (menuSelection < 5)) menuSelection++;
+  if (arduboy.justPressed(UP_BUTTON) && (menuSelection > 2)) menuSelection--;
+  if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
 }
 
 

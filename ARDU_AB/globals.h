@@ -10,8 +10,9 @@
 #define STATE_MENU_MAIN              1
 
 //define game states (on main menu)
-#define STATE_GAME_LOADING           3
-#define STATE_GAME_NEW               4
+#define STATE_GAME_LOADING           2
+#define STATE_GAME_NEW               3
+#define STATE_GAME_SOUND             4
 #define STATE_GAME_PLAYING           5
 #define STATE_GAME_INVENTORY         6
 #define STATE_GAME_OVER              7
