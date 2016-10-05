@@ -29,15 +29,12 @@ void drawText(const unsigned char *text, byte x, byte y, byte color, byte alignm
       yOffset += 6;
       xOffset = 0;
     }
-    else
+    else if (pgm_read_byte(text) != NONE)
     {
-      if (pgm_read_byte(text) != NONE)
-      {
-        if (color)sprites.drawSelfMasked(x - ((alignment == ALIGN_RIGHT) ? ((sizeText - 1) * 6) : 0) + xOffset, y + yOffset, font, pgm_read_byte(text));
-        else sprites.drawErase(x - ((alignment == ALIGN_RIGHT) ? ((sizeText - 1) * 6) : 0) + xOffset, y + yOffset, font, pgm_read_byte(text));
-      }
-      xOffset += 6;
+      if (color)sprites.drawSelfMasked(x - ((alignment == ALIGN_RIGHT) ? ((sizeText - 1) * 6) : 0) + xOffset, y + yOffset, font, pgm_read_byte(text));
+      else sprites.drawErase(x - ((alignment == ALIGN_RIGHT) ? ((sizeText - 1) * 6) : 0) + xOffset, y + yOffset, font, pgm_read_byte(text));
     }
+    xOffset += 6;
   }
 }
 
