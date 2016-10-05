@@ -1,0 +1,7 @@
+-Controls-
+D-pad: move character/cursor
+Outer/Right action button: Interaction, select, continue
+Inner/Left action button: Cancel, back, open/close menu
+
+-Save progress-
+To remove the Continue from the title screen just change the saveKey on line 1277 of Arduventure.ino

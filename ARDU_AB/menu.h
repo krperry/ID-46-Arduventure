@@ -21,6 +21,7 @@ void stateMenuMain()
   if (arduboy.audio.enabled()) drawText(labelSndOn, 40, 55, WHITE, ALIGN_LEFT);
   else drawText(labelSndOff, 40, 55, WHITE, ALIGN_LEFT);
   sprites.drawSelfMasked( 32, 37 + (menuSelection - 2) * 9, font, 43);
+  sprites.drawSelfMasked( 90, 37 + (menuSelection - 2) * 9, font, 44);
   if (arduboy.justPressed(DOWN_BUTTON) && (menuSelection < 4)) menuSelection++;
   if (arduboy.justPressed(UP_BUTTON) && (menuSelection > 2)) menuSelection--;
   if (arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
@@ -33,7 +34,7 @@ void stateMenuContinue()
 
 void stateMenuNew()
 {
-
+  drawText(labelYourName, 4, 2, WHITE, ALIGN_LEFT);
 }
 
 void stateMenuSound()
