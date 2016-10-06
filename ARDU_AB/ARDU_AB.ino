@@ -18,6 +18,7 @@
 #include "menu.h"
 #include "game.h"
 #include "text.h"
+#include "player.h"
 
 
 typedef void (*FunctionPointer) ();

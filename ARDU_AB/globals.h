@@ -28,5 +28,8 @@ Sprites sprites(arduboy);
 byte gameState = STATE_MENU_INTRO;           // start the game with the TEAM a.r.g. logo
 byte menuSelection = STATE_MENU_CONTINUE;    // PLAY menu item is pre-selected
 byte globalCounter = 0;
+byte currentLetter = 0;
+byte cursorX = 0;
+byte cursorY = 0;
 
 #endif
