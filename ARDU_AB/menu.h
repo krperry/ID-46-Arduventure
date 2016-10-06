@@ -17,7 +17,7 @@ void stateMenuMain()
 {
   sprites.drawSelfMasked(36, 3, aTeamArgGame, 0);
   sprites.drawSelfMasked(10, 10, titleScreen, 0);
-  drawText(labelContinue, 40, 37, WHITE, ALIGN_LEFT, RAM);
+  drawText(labelContinue, 40, 37, WHITE, ALIGN_LEFT, ROM);
   drawText(labelNewGame, 40, 46, WHITE, ALIGN_LEFT, ROM);
   if (arduboy.audio.enabled()) drawText(labelSndOn, 40, 55, WHITE, ALIGN_LEFT, ROM);
   else drawText(labelSndOff, 40, 55, WHITE, ALIGN_LEFT, ROM);

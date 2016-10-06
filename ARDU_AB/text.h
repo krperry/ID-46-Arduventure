@@ -11,11 +11,15 @@
 #define RAM                           0
 #define ROM                           1
 
-const unsigned char labelContinue[] = {8, 2, 14, 13, 19, 8, 13, 20, 4};
+PROGMEM const unsigned char labelContinue[] = {8, 2, 14, 13, 19, 8, 13, 20, 4};
 PROGMEM const unsigned char labelNewGame[] = {8, 13, 4, 22, NONE, 6, 0, 12, 4};
 PROGMEM const unsigned char labelSndOff[] = {8, 18, 13, 3, NONE, NONE, 14, 5, 5};
 PROGMEM const unsigned char labelSndOn[] = {8, 18, 13, 3, NONE, NONE, NONE, 14, 13};
-PROGMEM const unsigned char labelYourName[] = {10, 24, 14, 20, 17, NONE, 13, 0, 12, 4, 39};
+//PROGMEM const unsigned char labelYourName[] = {36, 19,4,11,11,NONE,20,18,NONE,24, 14, 20, 17, NONE, 13, 0, 12, 4,NEWLINE,1,17,0,21,4,NONE,0,17,3,20,21,4,13,19,20,17,4,17};
+//PROGMEM const unsigned char labelYourName[] = {19, 22,7,0,19,NONE,8,18,NONE,24, 14, 20, 17, NONE, 13, 0, 12, 4,NONE,39};
+PROGMEM const unsigned char labelYourName[] = {10, 24, 14, 20, 17, NONE, 13, 0, 12, 4,41};
+PROGMEM const unsigned char labelEnd[] = {3, 4,13,3};
+
 
 
 void drawText(const unsigned char *text, byte x, byte y, byte color, byte alignment, boolean romOrRam)
@@ -30,7 +34,7 @@ void drawText(const unsigned char *text, byte x, byte y, byte color, byte alignm
     if ((romOrRam == ROM) ? pgm_read_byte(text) == NEWLINE : (text[i]) == NEWLINE)
     {
       yOffset += 6;
-      xOffset = 0;
+      xOffset = -6;
     }
     else if ((romOrRam == ROM) ? pgm_read_byte(text) != NONE : (text[i]) != NONE)
     {
