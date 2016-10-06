@@ -34,7 +34,7 @@ void stateGameNew()
   if (arduboy.justPressed(B_BUTTON))
   {
     byte selectedLetter = cursorX + (cursorY * 9);
-    if (selectedLetter > 34)
+    if (selectedLetter > 35)
     {
       playerName[0] = currentLetter;
       if (!currentLetter)
