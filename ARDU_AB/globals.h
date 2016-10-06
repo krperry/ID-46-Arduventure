@@ -13,9 +13,10 @@
 #define STATE_MENU_SOUND             4
 
 //define game states (on main menu)
-#define STATE_GAME_PLAYING           5
-#define STATE_GAME_INVENTORY         6
-#define STATE_GAME_OVER              7
+#define STATE_GAME_NEW               5
+#define STATE_GAME_PLAYING           6
+#define STATE_GAME_INVENTORY         7
+#define STATE_GAME_OVER              8
 
 #define FACING_SOUTH                 0
 #define FACING_WEST                  1
@@ -25,7 +26,8 @@
 Arduboy arduboy;
 Sprites sprites(arduboy);
 
-byte gameState = STATE_MENU_INTRO;           // start the game with the TEAM a.r.g. logo
+//byte gameState = STATE_MENU_INTRO;           // start the game with the TEAM a.r.g. logo
+byte gameState = STATE_MENU_MAIN;           // start the game with the TEAM a.r.g. logo
 byte menuSelection = STATE_MENU_CONTINUE;    // PLAY menu item is pre-selected
 byte globalCounter = 0;
 byte currentLetter = 0;
