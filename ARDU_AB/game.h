@@ -36,14 +36,14 @@ void stateGameNew()
     byte selectedLetter = cursorX + (cursorY * 9);
     if (selectedLetter > 35)
     {
-      playerName[0] = currentLetter;
+      player.name[0] = currentLetter;
       if (!currentLetter)
       {
-        playerName[0] = 4;
-        playerName[1] = 11;
-        playerName[2] = 4;
-        playerName[3] = 13;
-        playerName[4] = 0;
+        player.name[0] = 4;
+        player.name[1] = 11;
+        player.name[2] = 4;
+        player.name[3] = 13;
+        player.name[4] = 0;
       }
       currentLetter = 0;
       cursorX = 0;
@@ -53,7 +53,7 @@ void stateGameNew()
     }
     else
     {
-      playerName[currentLetter + 1] = selectedLetter;
+      player.name[currentLetter + 1] = selectedLetter;
       currentLetter = min(currentLetter + 1, 5);
     }
   }
@@ -62,20 +62,20 @@ void stateGameNew()
   {
     if (currentLetter > 0)
     {
-      playerName[currentLetter] = 49;
+      player.name[currentLetter] = 49;
       currentLetter--;
     }
   }
   
   drawText(labelYourName, 12, 4, BLACK, ALIGN_LEFT, ROM);
-  drawText(playerName, 84, 4, BLACK, ALIGN_LEFT, RAM);
+  drawText(player.name, 84, 4, BLACK, ALIGN_LEFT, RAM);
   sprites.drawErase(6 + (cursorX * 12), 16 + (cursorY * 10), font, 43);
   drawText(labelEnd, 96, 56, BLACK, ALIGN_LEFT, ROM);
 };
 
 void stateGamePlaying()
 {
-  drawText(playerName, 46, 12, WHITE, ALIGN_LEFT, RAM);
+  drawText(player.name, 46, 12, WHITE, ALIGN_LEFT, RAM);
   if (arduboy.justPressed(B_BUTTON)) gameState = STATE_MENU_MAIN;
 };
 

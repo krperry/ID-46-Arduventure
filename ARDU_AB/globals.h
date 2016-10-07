@@ -23,6 +23,8 @@
 #define FACING_NORTH                 2
 #define FACING_EAST                  3
 
+#define ITEMAMOUNT                   6
+
 Arduboy arduboy;
 Sprites sprites(arduboy);
 
