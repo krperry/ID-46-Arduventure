@@ -17,6 +17,7 @@
 #include "globals.h"
 #include "menu.h"
 #include "game.h"
+#include "inputs.h"
 #include "text.h"
 #include "item.h"
 #include "player.h"

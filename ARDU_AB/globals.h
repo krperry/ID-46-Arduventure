@@ -18,6 +18,11 @@
 #define STATE_GAME_INVENTORY         7
 #define STATE_GAME_OVER              8
 
+#define GAME_TOP                     0
+#define GAME_BOTTOM                  48
+#define GAME_LEFT                    0
+#define GAME_RIGHT                   112
+
 #define FACING_SOUTH                 0
 #define FACING_WEST                  1
 #define FACING_NORTH                 2

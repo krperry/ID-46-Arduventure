@@ -3,6 +3,7 @@
 
 #include <Arduino.h>
 #include "globals.h"
+#include "inputs.h"
 
 void stateGameLoading()
 {
@@ -49,6 +50,7 @@ void stateGameNew()
       cursorX = 0;
       cursorY = 0;
       gameState = STATE_GAME_PLAYING;
+      setPlayer();
       return;
     }
     else
@@ -75,7 +77,10 @@ void stateGameNew()
 
 void stateGamePlaying()
 {
-  drawText(player.name, 46, 12, WHITE, ALIGN_LEFT, RAM);
+  arduboy.fillScreen(1);
+  drawText(player.name, 46, 12, BLACK, ALIGN_LEFT, RAM);
+  checkMapInputs();
+  drawPlayer();
   if (arduboy.justPressed(B_BUTTON)) gameState = STATE_MENU_MAIN;
 };
 
